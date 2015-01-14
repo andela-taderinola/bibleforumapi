@@ -1,0 +1,22 @@
+{
+  "name": "BibleForumAPI",
+  "version": "1.0.0",
+  "description": "This an API that holds questions and answers from different users of the Bible Feeds App",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Timilehin Aderinola",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.10.1",
+    "express": "^4.10.7",
+    "mongoose": "^3.8.21",
+    "jsonwebtoken": "0.4.0",
+    "morgan": "latest"
+  },
+  "engines": {
+        "node": "0.10.35",
+        "npm": "1.4.28"
+  }
+}
