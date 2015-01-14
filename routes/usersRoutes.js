@@ -15,6 +15,7 @@ function ensureAuthorized(request, response, next) {
     }
 };
 
+
 module.exports = function (router) {
   router.route('/users')
   .all(function (request, response, next){
@@ -27,6 +28,7 @@ module.exports = function (router) {
     });
   })
 
+  //create new users
   .post(function (request, response) {
     var newUser = request.body;
     User.findOne({
@@ -65,7 +67,25 @@ module.exports = function (router) {
     });
   });
 
+  router.route('/users/:id')
+    .delete(function (request, response) {
+      User.findByIdAndRemove(request.params.id, function (error, user) {
+        if(!user) {
+          response.json({
+            type: false,
+            data: "User not found!"
+          });
+        } else {
+          response.json({
+            type: true,
+            data: "Account '" + user.username + "' deleted successfully."
+          });
+        }
+      });
+    });
+
   router.route('/users/:id/questions')
+  //add questions
     .post(ensureAuthorized, function (request, response) {
       var newQuestion = request.body;
       Question.create({
@@ -73,4 +93,26 @@ module.exports = function (router) {
         author_id: request.params.id
       });
     });
+
+    router.route('/users/:id/questions/:question_id')
+    //edit question
+      .put(ensureAuthorized, function (request, response) {
+        var updatedQuestion = request.body;
+        Question.findByIdAndUpdate(request.params.question_id, {
+          content: updatedQuestion.content,
+          edited: true
+        }, function (error, question) {
+          if(error) {
+            response.json({
+              type: false,
+              data: "Error occured: " + error
+            });
+          } else {
+            response.json({
+              type: true,
+              data: "Question updated successfully."
+            });
+          }
+        });
+      });
 };

@@ -7,7 +7,8 @@ var questionsSchema = new Schema({
   posted: {
     type: Date,
     default: Date.now
-  }  
+  },
+  edited: {type: Boolean, default: false}  
 });
 
 module.exports = mongoose.model('Question', questionsSchema);
