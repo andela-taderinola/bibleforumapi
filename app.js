@@ -6,6 +6,7 @@ var jwt = require('jsonwebtoken');
 var router = express.Router();
 var app = express();
 var routes = require('./routes');
+require('./config/db.js');
 
 //Cross domain allow access
 var allowCrossDomain = function(request, response, next) {

@@ -22,14 +22,14 @@ module.exports = function (router) {
   })
 
   .get(function (request, response) {
-    user.find(function (error, user) {
+    User.find(function (error, user) {
       response.json(user);
     });
   })
 
   .post(function (request, response) {
     var newUser = request.body;
-    user.findOne({
+    User.findOne({
       username: newUser.username 
     }, function (error, user) {
       if(error) {
@@ -51,6 +51,7 @@ module.exports = function (router) {
           userModel.lastName = newUser.lastName;
           userModel.save(function (error, user) {
             user.token = jwt.sign(user, process.env.JWT_SECRET);
+            console.log(user.token);
             user.save(function (error, user1) {
               response.json({
                 type: true,
