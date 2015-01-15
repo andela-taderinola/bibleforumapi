@@ -8,6 +8,7 @@ var questionsSchema = new Schema({
     type: Date,
     default: Date.now
   },
+  answers: {type: Number, default: 0},
   edited: {type: Boolean, default: false}  
 });
 
