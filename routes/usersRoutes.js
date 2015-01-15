@@ -1,6 +1,7 @@
 var jwt = require('jsonwebtoken');
 var User = require('../models/users');
 var Question = require('../models/questions');
+var Answer = require('../models/answers');
 var ensureAuthorized = require('../auth/ensureAuthorized');
 
 module.exports = function (router) {
@@ -13,8 +14,9 @@ module.exports = function (router) {
     User.find(function (error, user) {
       response.json(user);
     });
-  })
+  });
 
+  router.route('/signup')
   //create account
   .post(function (request, response) {
     var newUser = request.body;
@@ -45,6 +47,7 @@ module.exports = function (router) {
               response.json({
                 type: true,
                 data: user1,
+                username: user1.username,
                 token:user1.token
               });
             });
@@ -54,7 +57,7 @@ module.exports = function (router) {
     });
   });
 
-  router.route('/users/:user_id')
+  router.route('/dashboard/:user_id')
   //change account details
     .put(ensureAuthorized, function (request, response) {
       updatedUser = request.body;
@@ -91,6 +94,97 @@ module.exports = function (router) {
               type: true,
               data: "Account '" + user.username + "' deleted successfully."
           });
+          }
+        }
+      });
+    });
+
+  router.route('/api/users/:username/questions')
+  //get all questions by a user
+    .get(ensureAuthorized, function (request, response) {
+      Question.find({author: request.params.username}, function (error, question) {
+        if(error) {
+          response.json(error);
+        } else {
+          if(!question) {
+            response.sendStatus(404);
+          } else {
+            response.json(question);
+          }
+        }
+      });
+    })
+  //add questions
+    .post(ensureAuthorized, function (request, response) {
+      var newQuestion = request.body;
+      Question.create({
+        content: newQuestion.content,
+        author: request.headers["username"]
+      }, function (error, question) {
+        if(error) {
+          response.json({
+            type: false,
+            data: "An error occured: " + error
+          });
+        } else {
+          response.json({
+            type: true,
+            data: "Success."
+          });
+        }
+      });
+    });
+
+  router.route('/api/users/:username/questions/:question_id')
+  //edit question
+    .put(ensureAuthorized, function (request, response) {
+      var updatedQuestion = request.body;
+      Question.findByIdAndUpdate(request.params.question_id, {
+        content: updatedQuestion.content,
+        edited: true
+      }, function (error, question) {
+        if(error) {
+          response.json({
+            type: false,
+            data: "Error occured: " + error
+          });
+        } else {
+          response.json({
+            type: true,
+            data: "Question updated successfully."
+          });
+        }
+      });
+    })
+  //delete question
+    .delete(ensureAuthorized, function (request, response) {
+      Question.findByIdAndRemove(request.params.question_id, function (error, question) {
+        if(error) {
+          response.json({
+            type: false,
+            data: "Error occured: " + error
+          });
+        } else {
+          if(!question) {
+            response.sendStatus(404);
+          } else {
+            response.sendStatus(200);
+          }
+        }
+      });
+    });  
+
+  router.route('/users/:username/answers')
+  //get all answers by a user
+    .get(ensureAuthorized, function (request, response) {
+      Answer.find({author: request.params.username}, function (error, answers) {
+        if(error) {
+          response.json(error);
+        } else {
+          if(!answers) {
+            response.sendStatus(404);
+          } else {
+            response.json(answers);
           }
         }
       });

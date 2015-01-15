@@ -5,7 +5,7 @@ var Answer = require('../models/answers');
 var ensureAuthorized = require('../auth/ensureAuthorized');
 
 module.exports = function (router) {
-  router.route('/questions')
+  router.route('/api/questions')
     .all(function (request, response, next){
       next();
     })
@@ -24,28 +24,16 @@ module.exports = function (router) {
       });
     });
 
-  router.route('/questions/:user_id')
-  //get all questions by a user
-    .get(ensureAuthorized, function (request, response) {
-      Question.find({author_id: request.params.user_id}, function (error, question) {
-        if(error) {
-          response.json(error);
-        } else {
-          if(!question) {
-            response.sendStatus(404);
-          } else {
-            response.json(question);
-          }
-        }
-      });
-    })
-  //add questions
-    .post(ensureAuthorized, function (request, response) {
-      var newQuestion = request.body;
-      Question.create({
-        content: newQuestion.content,
-        author_id: request.params.user_id
-      }, function (error, question) {
+  //answers
+  router.route('/api/questions/:question_id/answers')
+   //post answers
+   .post(ensureAuthorized, function (request, response) {
+      var newAnswer = request.body;
+      Answer.create({
+        content: newAnswer.content,
+        question_id: request.params.question_id,
+        author: request.headers["username"]
+      }, function (error, answer) {
         if(error) {
           response.json({
             type: false,
@@ -54,48 +42,50 @@ module.exports = function (router) {
         } else {
           response.json({
             type: true,
-            data: "Success."
+            data: "Answer sent."
           });
         }
-      });
-    });
-
-    router.route('/questions/:question_id')
-    //edit question
-      .put(ensureAuthorized, function (request, response) {
-        var updatedQuestion = request.body;
         Question.findByIdAndUpdate(request.params.question_id, {
-          content: updatedQuestion.content,
-          edited: true
+          $inc: {answers: 1}
         }, function (error, question) {
-          if(error) {
-            response.json({
-              type: false,
-              data: "Error occured: " + error
-            });
-          } else {
-            response.json({
-              type: true,
-              data: "Question updated successfully."
-            });
-          }
         });
-      })
-    //delete question
-      .delete(ensureAuthorized, function (request, response) {
-      Question.findByIdAndRemove(request.params.question_id, function (error, question) {
+      });
+   })
+
+  //get all answers to a question
+  .get(function (request, response) {
+    Answer.find({question_id: request.params.question_id}, function (error, answer) {
+      if(error){
+        response.json({
+          type: false,
+          data: "Error occured: " + error
+        });
+      } else {
+        response.json(answer);
+      }
+    });
+  });
+
+  router.route('/api/questions/:question_id/answers/:answer_id')  
+  //delete answer
+    .delete(ensureAuthorized, function (request, response) {
+      Answer.findByIdAndRemove(request.params.answer_id, function (error, answer) {
         if(error) {
           response.json({
             type: false,
             data: "Error occured: " + error
           });
         } else {
-          if(!question) {
+          if(!answer) {
             response.sendStatus(404);
           } else {
             response.sendStatus(200);
           }
         }
+        Question.findByIdAndUpdate(request.params.question_id, {
+          $inc: {answers: -1}
+        }, function (error, question) {
+        });
       });
     });
 };

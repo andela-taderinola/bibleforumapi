@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 //routes
-app.use('/api', router);
+app.use('/', router);
 routes(router);
 
 //listen on port 5000

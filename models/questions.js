@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 var questionsSchema = new Schema({
   content: String,
-  author_id: Schema.Types.ObjectId,
+  author: String,
   posted: {
     type: Date,
     default: Date.now
