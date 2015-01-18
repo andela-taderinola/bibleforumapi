@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/biblefeeds');
+mongoose.connect('mongodb://timiderinola:afriica90@ds031751.mongolab.com:31751/bibleforum');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'Cant\'t connect to the database'));
 db.once('open', function(){
