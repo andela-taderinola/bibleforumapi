@@ -23,7 +23,7 @@ module.exports = function (router) {
             data: "Error occured: " + error
           });
         } else {
-          response.send(200);
+          response.sendStatus(200);
         }
       });
     });

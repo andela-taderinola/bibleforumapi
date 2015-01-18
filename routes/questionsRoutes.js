@@ -24,6 +24,22 @@ module.exports = function (router) {
       });
     });
 
+  router.route('/api/questions/:question_id')  
+    //get question by id
+    .get(function (request, response) {
+      Question.findById(request.params.question_id, (function (error, question) {
+        if(error) {
+          response.send(error);
+        } else {
+          if(!question) {
+            response.sendStatus(404);
+          } else {
+            response.json(question);
+          }
+        }
+      }));
+    });
+
   //answers
   router.route('/api/questions/:question_id/answers')
    //post answers
@@ -31,8 +47,11 @@ module.exports = function (router) {
       var newAnswer = request.body;
       Answer.create({
         content: newAnswer.content,
+        likes: newAnswer.likes,
+        okays: newAnswer.okays,
+        dislikes: newAnswer.dislikes,
         question_id: request.params.question_id,
-        author: request.headers["username"]
+        author: newAnswer.author
       }, function (error, answer) {
         if(error) {
           response.json({

@@ -119,7 +119,7 @@ module.exports = function (router) {
       var newQuestion = request.body;
       Question.create({
         content: newQuestion.content,
-        author: request.headers["username"]
+        author: request.params.username
       }, function (error, question) {
         if(error) {
           response.json({
