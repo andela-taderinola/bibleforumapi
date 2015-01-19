@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+require('../config/db.js');
 var Schema = mongoose.Schema;
 
 var answersSchema = new Schema({
