@@ -6,13 +6,7 @@ var bodyParser = require('body-parser');
 var jwt = require('jsonwebtoken');
 var router = express.Router();
 var app = express();
-var mongoose = require('mongoose');
 var routes = require('./routes');
-// require('./config/db.js');
-
-// var mongoose = require('mongoose');
-// // mongoose.connect('mongodb://localhost/biblefeeds');
-// mongoose.connect('mongodb://timiderinola:afriica90@ds031751.mongolab.com:31751/bibleforum');
 
 //Cross domain allow access
 var allowCrossDomain = function(request, response, next) {

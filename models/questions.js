@@ -1,7 +1,18 @@
-// var mongoose = require('mongoose');
+var mongoose = require('mongoose');
 
-// mongoose.connect('mongodb://timiderinola:afriica90@ds031531.mongolab.com:31531/todosdb');
+mongoose.createConnection('mongodb://timilehin:timilehin@ds031751.mongolab.com:31751/bibleforum');
 
-// var Schema = mongoose.Schema;
+var Schema = mongoose.Schema;
 
+var questionsSchema = new Schema({
+  content: String,
+  author: String,
+  posted: {
+    type: Date,
+    default: Date.now
+  },
+  answers: {type: Number, default: 0},
+  edited: {type: Boolean, default: false}  
+});
 
+module.exports = mongoose.model('Question', questionsSchema);

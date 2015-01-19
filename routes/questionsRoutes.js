@@ -1,6 +1,6 @@
 var jwt = require('jsonwebtoken');
-var User = require('../models/answers');
-var Question = require('../models/answers');
+var User = require('../models/users');
+var Question = require('../models/questions');
 var Answer = require('../models/answers');
 var ensureAuthorized = require('../auth/ensureAuthorized');
 

@@ -4,32 +4,6 @@ mongoose.createConnection('mongodb://timilehin:timilehin@ds031751.mongolab.com:3
 
 var Schema = mongoose.Schema;
 
-var usersSchema = new Schema({
-  username: String,
-  password: String,
-  firstName: String,
-  lastName: String,
-  joined: {
-    type: Date,
-    default: Date.now
-  }  
-});
-
-module.exports = mongoose.model('User', usersSchema);
-
-var questionsSchema = new Schema({
-  content: String,
-  author: String,
-  posted: {
-    type: Date,
-    default: Date.now
-  },
-  answers: {type: Number, default: 0},
-  edited: {type: Boolean, default: false}  
-});
-
-module.exports = mongoose.model('Question', questionsSchema);
-
 var answersSchema = new Schema({
   content: String,
   author: String,
