@@ -7,7 +7,7 @@ var router = express.Router();
 var app = express();
 var mongoose = require('mongoose');
 var routes = require('./routes');
-require('./config/db.js');
+// require('./config/db.js');
 
 // var mongoose = require('mongoose');
 // // mongoose.connect('mongodb://localhost/biblefeeds');
@@ -16,7 +16,7 @@ require('./config/db.js');
 //Cross domain allow access
 var allowCrossDomain = function(request, response, next) {
   response.header('Access-Control-Allow-Origin', '*');
-  response.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
+  response.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
   response.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
 
   next();
