@@ -6,6 +6,7 @@ var bodyParser = require('body-parser');
 var jwt = require('jsonwebtoken');
 var router = express.Router();
 var app = express();
+app.use(cors());
 var routes = require('./routes');
 
 //Cross domain allow access
@@ -20,8 +21,6 @@ var routes = require('./routes');
 //       next();
 //   }
 // };
-
-app.use(cors());
 
 app.set('port', (process.env.PORT || 5000));
 
