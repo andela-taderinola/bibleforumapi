@@ -1,5 +1,6 @@
 //Required modules
 var express = require('express');
+var cors = requires('cors');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var jwt = require('jsonwebtoken');
@@ -14,15 +15,15 @@ var routes = require('./routes');
 // mongoose.connect('mongodb://timiderinola:afriica90@ds031751.mongolab.com:31751/bibleforum');
 
 //Cross domain allow access
-var allowCrossDomain = function(request, response, next) {
-  response.header('Access-Control-Allow-Origin', '*');
-  response.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
-  response.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+// var allowCrossDomain = function(request, response, next) {
+//   response.header('Access-Control-Allow-Origin', '*');
+//   response.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+//   response.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
 
-  next();
-};
+//   next();
+// };
 
-app.use(allowCrossDomain);
+app.use(cors());
 
 app.set('port', (process.env.PORT || 5000));
 
