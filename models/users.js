@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-mongoose.createConnection('mongodb://timilehin:timilehin@ds031751.mongolab.com:31751/bibleforum');
+// mongoose.createConnection('mongodb://timilehin:timilehin@ds031751.mongolab.com:31751/bibleforum');
 
 var Schema = mongoose.Schema;
 
